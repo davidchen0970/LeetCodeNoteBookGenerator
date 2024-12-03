@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode 心得生成器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        input[type="text"], textarea, button, select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .section-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin: 15px 0 5px;
+        }
+        button {
+            background-color: #00AF9B;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #008f7c;
+        }
+        .preview {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            white-space: pre-wrap;
+            background-color: #fafafa;
+            border-radius: 5px;
+            position: relative;
+        }
+        .difficulty {
+            font-weight: bold;
+        }
+        .difficulty.Easy {
+            color: #00AF9B;
+        }
+        .difficulty.Medium {
+            color: #FFB800;
+        }
+        .difficulty.Hard {
+            color: #FF375F;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LeetCode 心得生成器</h1>
+
+        <div class="section-title">題號與標題</div>
+        <input type="text" id="problemTitle" placeholder="題號與標題（如：Leetcode 148. Sort List）">
+
+        <div class="section-title">題目連結</div>
+        <input type="text" id="problemLink" placeholder="題目連結（如：https://leetcode.com/problems/sort-list/）">
+        
+        <div class="section-title">難度</div>
+        <select id="difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+
+        <div class="section-title">通過率</div>
+        <input type="text" id="acceptanceRate" placeholder="通過率（如：58.0%）">
+
+        <div class="section-title">限制條件</div>
+        <textarea id="constraints" placeholder="請輸入限制條件，每行一個條件"></textarea>
+        
+        <div class="section-title">解法區域</div>
+        <div id="solutionContainer"></div>
+
+        <button onclick="addSolution()">增加解法</button>
+        <button onclick="generate()">生成心得</button>
+        <button class="copy-button" onclick="copyToClipboard()">複製</button>
+        <div class="preview" id="output">
+        </div>
+    </div>
+
+    <script>
+        let solutionCount = 0;
+
+        function addSolution() {
+            solutionCount++;
+            const container = document.getElementById('solutionContainer');
+
+            const solutionBlock = document.createElement('div');
+            solutionBlock.className = 'solution-block';
+
+            const solutionTitle = document.createElement('div');
+            solutionTitle.className = 'section-title';
+            solutionTitle.innerText = `解法說明 ${solutionCount}`;
+            solutionBlock.appendChild(solutionTitle);
+
+            const solutionTextarea = document.createElement('textarea');
+            solutionTextarea.id = `solution${solutionCount}`;
+            solutionTextarea.placeholder = `請輸入解法 ${solutionCount} 的說明`;
+            solutionBlock.appendChild(solutionTextarea);
+
+            const timeComplexityTitle = document.createElement('div');
+            timeComplexityTitle.className = 'section-title';
+            timeComplexityTitle.innerText = `時間複雜度 ${solutionCount}`;
+            solutionBlock.appendChild(timeComplexityTitle);
+
+            const timeComplexityInput = document.createElement('input');
+            timeComplexityInput.type = 'text';
+            timeComplexityInput.id = `timeComplexity${solutionCount}`;
+            timeComplexityInput.placeholder = `時間複雜度（如：O(n log n)）`;
+            solutionBlock.appendChild(timeComplexityInput);
+
+            const spaceComplexityTitle = document.createElement('div');
+            spaceComplexityTitle.className = 'section-title';
+            spaceComplexityTitle.innerText = `空間複雜度 ${solutionCount}`;
+            solutionBlock.appendChild(spaceComplexityTitle);
+
+            const spaceComplexityInput = document.createElement('input');
+            spaceComplexityInput.type = 'text';
+            spaceComplexityInput.id = `spaceComplexity${solutionCount}`;
+            spaceComplexityInput.placeholder = `空間複雜度（如：O(n)）`;
+            solutionBlock.appendChild(spaceComplexityInput);
+
+            const codeTitle = document.createElement('div');
+            codeTitle.className = 'section-title';
+            codeTitle.innerText = `程式碼 ${solutionCount}`;
+            solutionBlock.appendChild(codeTitle);
+
+            const codeTextarea = document.createElement('textarea');
+            codeTextarea.id = `code${solutionCount}`;
+            codeTextarea.placeholder = `解法 ${solutionCount} 的程式碼`;
+            solutionBlock.appendChild(codeTextarea);
+
+            container.appendChild(solutionBlock);
+        }
+
+        function generate() {
+            const colorList = ['#00AF9B', '#FFB800','#FF375F'];
+            const title = document.getElementById('problemTitle').value;
+            const link = document.getElementById('problemLink').value;
+            const difficulty = document.getElementById('difficulty').value;
+            const acceptanceRate = document.getElementById('acceptanceRate').value;
+            const constraints = document.getElementById('constraints').value.split('\n').map(item => `<li>${item}</li>`).join('\n');
+            var color = '';
+            if(difficulty == 'Easy') color = colorList[0];
+            else if (difficulty == 'Medium') color = colorList[1];
+            else if (difficulty == 'Hard') color = colorList[2];
+
+            let solutions = '';
+            for (let i = 1; i <= solutionCount; i++) {
+                const solution = document.getElementById(`solution${i}`).value;
+                const timeComplexity = document.getElementById(`timeComplexity${i}`).value;
+                const spaceComplexity = document.getElementById(`spaceComplexity${i}`).value;
+                const code = document.getElementById(`code${i}`).value;
+                solutions += `
+
+
+### 解法 ${i}
+${solution}
+
+- 時間複雜度: ${timeComplexity}
+- 空間複雜度: ${spaceComplexity}
+
+\`\`\`cpp!=
+${code}
+\`\`\`
+`;
+            }
+
+            const output = `
+# ${title}
+[${title}](${link}) (<font color=${color}> ${difficulty}</font> 通過率: ${acceptanceRate})
+
+
+
+## 限制條件
+<ul>
+${constraints}
+</ul>
+
+${solutions}`;
+
+            document.getElementById('output').innerHTML = output;
+        }
+
+        function copyToClipboard() {
+            const textToCopy = document.getElementById('output').innerHTML;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = textToCopy;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            alert('Markdown 已成功複製到剪貼簿！');
+        }
+    </script>
+</body>
+</html>

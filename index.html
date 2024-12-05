@@ -205,14 +205,20 @@ ${solutions}`;
 
         function copyToClipboard() {
             const textToCopy = document.getElementById('output').innerHTML;
+
+            const tempElement = document.createElement('textarea');
+            tempElement.innerHTML = textToCopy;
+            const decodedText = tempElement.value; 
+
             const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = textToCopy;
+            tempTextArea.value = decodedText;
             document.body.appendChild(tempTextArea);
             tempTextArea.select();
             document.execCommand('copy');
             document.body.removeChild(tempTextArea);
             alert('Markdown 已成功複製到剪貼簿！');
         }
+
     </script>
 </body>
 </html>

@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+.container {
+    max-width: 900px;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 20px;
+}
+input[type="text"], textarea, button, select {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.section-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 15px 0 5px;
+}
+button {
+    background-color: #00AF9B;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #008f7c;
+}
+.preview {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    white-space: pre-wrap;
+    background-color: #fafafa;
+    border-radius: 5px;
+    position: relative;
+}
+.difficulty {
+    font-weight: bold;
+}
+.difficulty.Easy {
+    color: #00AF9B;
+}
+.difficulty.Medium {
+    color: #FFB800;
+}
+.difficulty.Hard {
+    color: #FF375F;
+}

@@ -4,41 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LeetCode 心得生成器</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     <div class="container">
-        <h1>LeetCode 心得生成器</h1>
+        <div class="row">
+            <div class="col-12">
+                <h1>LeetCode 心得生成器</h1>
+            </div>
+            <div class="col-12">
+                <div class="mb-3">
 
-        <div class="section-title">題號與標題</div>
-        <input type="text" id="problemTitle" placeholder="題號與標題（如：Leetcode 148. Sort List）">
+                    <div class="section-title form-label">題號與標題</div>
+                    <input type="text" class="form-control" id="problemTitle" placeholder="題號與標題（如：Leetcode 148. Sort List）">
+                </div>
+                <div class="mb-3">
+                    <div class="section-title form-label">題目連結</div>
+                    <input type="text" class="form-control" id="problemLink" placeholder="題目連結（如：https://leetcode.com/problems/sort-list/）">
+                </div>
+                <div class="mb-3">
+                    <div class="section-title">難度</div>
+                    <select class="form-select" id="difficulty" aria-label="Default select example">
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <div class="section-title form-label">通過率</div>
+                    <input type="text" class="form-control" id="acceptanceRate" placeholder="通過率（如：58.0%）">
+                </div>
 
-        <div class="section-title">題目連結</div>
-        <input type="text" id="problemLink" placeholder="題目連結（如：https://leetcode.com/problems/sort-list/）">
-        
-        <div class="section-title">難度</div>
-        <select id="difficulty">
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
-        </select>
+                <div class="mb-3">
+                    <div class="section-title" class="form-label">限制條件</div>
+                    <textarea rows="5" id="constraints" class="form-control" placeholder="請輸入限制條件，每行一個條件"></textarea>
+                </div>
+                <hr>
+                <div class="mb-3">
+                    <h4 class="section-title">解法區域</h4>
+                </div>
+                <div class="mb-3">
+                    <div id="solutionContainer"></div>
+                    <div class="button-container">
+                        <button type="button" class="btn btn-secondary btn-lg" onclick="addSolution()">增加解法</button>
+                        <button type="button" class="btn btn-secondary btn-lg" onclick="generate()">生成心得</button>
+                        <button type="button" class="btn btn-secondary btn-lg" onclick="copyToClipboard()">複製</button>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="preview form-control mb-3" id="output">
+                </div>
+            </div>
 
-        <div class="section-title">通過率</div>
-        <input type="text" id="acceptanceRate" placeholder="通過率（如：58.0%）">
+            <script src="script.js"></script>
 
-        <div class="section-title">限制條件</div>
-        <textarea id="constraints" placeholder="請輸入限制條件，每行一個條件"></textarea>
-        
-        <div class="section-title">解法區域</div>
-        <div id="solutionContainer"></div>
-
-        <button onclick="addSolution()">增加解法</button>
-        <button onclick="generate()">生成心得</button>
-        <button class="copy-button" onclick="copyToClipboard()">複製</button>
-        <div class="preview" id="output">
         </div>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
